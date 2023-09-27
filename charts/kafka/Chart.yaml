@@ -1,0 +1,9 @@
+apiVersion: v2
+name: kafka
+description: Eventuate Kafka
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.17.0.RELEASE"

@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  kafka:
+  - apiVersion: v2
+    appVersion: 0.17.0.RELEASE
+    created: "2023-09-27T16:22:12.940921+09:00"
+    description: Eventuate Kafka
+    digest: e97b3d2e4c6a320ab9b25fb72e1cf7030c6f9724fef7273f509656b0435e1743
+    name: kafka
+    type: application
+    urls:
+    - https://github.com/jangjunha/ftgo-charts/kafka-0.1.0.tgz
+    version: 0.1.0
+  restaurant-service:
+  - apiVersion: v2
+    appVersion: ad270b0770e2f837bc74199257e7b711abac3068
+    created: "2023-09-27T16:22:12.941167+09:00"
+    description: A Helm chart for Kubernetes
+    digest: 16952a865bcb32a56b9e9199bf0ce511a6d353838b3ba01c74c15cdc2f3f49c9
+    name: restaurant-service
+    type: application
+    urls:
+    - https://github.com/jangjunha/ftgo-charts/restaurant-service-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-09-27T16:22:12.939803+09:00"

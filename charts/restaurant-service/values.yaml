@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: asia-northeast3-docker.pkg.dev/ftgo-jangjunha/docker-public/ftgo-restaurant-service
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

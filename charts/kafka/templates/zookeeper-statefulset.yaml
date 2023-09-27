@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernets.io/name: zookeeper
+      app.kubernets.io/component: zookeeper
+      app.kubernetes.io/part-of: ftgo
+  template:
+    metadata:
+      labels:
+        app.kubernets.io/name: zookeeper
+        app.kubernets.io/component: zookeeper
+        app.kubernetes.io/part-of: ftgo
+    spec:
+      containers:
+        - name: zookeeper
+          image: eventuateio/eventuate-zookeeper:0.17.0.RELEASE
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 0.05
+          ports:
+            - containerPort: 2181
+              name: client
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "2181"
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xmx64m"
+          livenessProbe:
+            exec:
+              command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 localhost 2181 | grep imok']
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 localhost 2181 | grep imok']
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: data
+              mountPath: /usr/local/zookeeper-data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

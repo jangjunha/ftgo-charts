@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: restaurant-service-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernets.io/name: restaurant-service-db
+      app.kubernets.io/component: db
+      app.kubernetes.io/part-of: ftgo
+  template:
+    metadata:
+      labels:
+        app.kubernets.io/name: restaurant-service-db
+        app.kubernets.io/component: db
+        app.kubernetes.io/part-of: ftgo
+    spec:
+      containers:
+        - name: restaurant-service-db
+          image: asia-northeast3-docker.pkg.dev/ftgo-jangjunha/docker-public/postgres-base
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 0.05
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "trust"
+            - name: POSTGRES_DB
+              value: "ftgo-restaurant-service"
+            - name: USE_DB_ID
+              value: "true"
+          livenessProbe:
+            exec:
+              command: ["psql", "-w", "-U", "postgres", "-d", "ftgo-restaurant-service", "-c", "SELECT 1"]
+          readinessProbe:
+            exec:
+              command: ["psql", "-w", "-U", "postgres", "-d", "ftgo-restaurant-service", "-c", "SELECT 1"]
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
